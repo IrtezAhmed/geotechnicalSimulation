@@ -11,7 +11,7 @@ function make2DArray(cols, rows) {
 }
 
 let grid; //defines grid
-let w = 1; //variable to define grid size
+let w = 1; //variable to define grid size. Only one is the known divisible integer....
 let cols, rows; //defines col and row variables
 let gridHeight, gridWidth;
 let centeringHeight, centeringWidth;
@@ -26,8 +26,8 @@ function setup() {
 
   gridWidth = floor(windowWidth * 0.8);
   gridHeight = floor(windowHeight * 0.8); 
-  centeringHeight = floor((windowHeight-gridHeight)/2)
-  centeringWidth = floor((windowWidth-gridWidth)/2)
+  centeringHeight = floor((windowHeight - gridHeight)/2)
+  centeringWidth = floor((windowWidth - gridWidth)/2)
 
 
   cols = gridWidth / w; //defines the no. of col
@@ -80,13 +80,13 @@ function draw() {
   //draw the rectangular border
   stroke(255);
   fill(0);
-  rect(floor((windowWidth-gridWidth)/2),floor((windowHeight-gridHeight)/2),gridWidth, gridHeight);
+  rect(floor((windowWidth-gridWidth)/2),floor((windowHeight-gridHeight)/2), gridWidth, gridHeight);
 
   //check when mouse is clicked and held to produce sand
     if (mouseIsPressed === true){
-      let mouseCol = floor((mouseX - centeringWidth / 2) / w);
+      let mouseCol = floor((mouseX - centeringWidth) / w);
       let mouseRow = floor((mouseY - centeringHeight) / w);
-      let matrix = 15;
+      let matrix = 30;
       let splash = floor(matrix/2);
       for (let i = -splash; i <= splash; i++){
         for (let j = -splash; j <= splash; j++){
@@ -111,7 +111,7 @@ function draw() {
       if (grid[i][j] > 0) {
         fill(grid[i][j], 255, 255);
         let x = i * w; let y = j * w;
-      square(x+centeringHeight, y+centeringHeight, w); //draws a white square when the state of the array is 1
+      square(x+centeringWidth, y+centeringHeight, w); //draws a white square when the state of the array is 1
     }
     }
   }
