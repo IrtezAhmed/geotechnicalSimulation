@@ -11,21 +11,25 @@ function make2DArray(cols, rows) {
 }
 
 let grid; //defines grid
-let w = 2; //variable to define grid size
+let w = 1; //variable to define grid size
 let cols, rows; //defines col and row variables
 let gridHeight, gridWidth;
-let canvasHeight, canvasWidth;
-gridHeight = gridWidth = 550; //defines the width and height of the grid
-canvasWidth = canvasHeight = 700; //defines canvas size
-let centeringVar = (canvasHeight-gridHeight)/2
+let centeringHeight, centeringWidth;
+//let canvasHeight, canvasWidth;
+//gridHeight = gridWidth = 550; //defines the width and height of the grid
 let hueValue = 200; //sets the hue value to blue
 
-//trying to create a way to automatically center the grid
-//I need a way to take the canvas width --- I can just input with a variable...?
-
 function setup() {
-  createCanvas(canvasWidth, canvasHeight);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 255, 255);
+
+
+  gridWidth = floor(windowWidth * 0.8);
+  gridHeight = floor(windowHeight * 0.8); 
+  centeringHeight = floor((windowHeight-gridHeight)/2)
+  centeringWidth = floor((windowWidth-gridWidth)/2)
+
+
   cols = gridWidth / w; //defines the no. of col
   rows =  gridHeight / w; //defines the no. of rows
   grid = make2DArray(cols,rows); //makes an array of size col x row
@@ -37,6 +41,7 @@ for (let i = 0; i < cols; i++) {
   
 }
 
+
 }
 
 //commented out mousePressed() because only works when dragged
@@ -44,8 +49,8 @@ for (let i = 0; i < cols; i++) {
   //generates 1 states (sand) when mouse is dragged.
   //ensures them mouse is within boundaries of the grid.
 
-  let mouseCol = floor((mouseX - centeringVar) / w);
-  let mouseRow = floor((mouseY - centeringVar) / w);
+  let mouseCol = floor((mouseX - centeringHeight) / w);
+  let mouseRow = floor((mouseY - centeringHeight) / w);
   let matrix = 15;
   let splash = floor(matrix/2);
   for (let i = -splash; i <= splash; i++){
@@ -72,10 +77,15 @@ for (let i = 0; i < cols; i++) {
 function draw() {
   background("black");
   
+  //draw the rectangular border
+  stroke(255);
+  fill(0);
+  rect(floor((windowWidth-gridWidth)/2),floor((windowHeight-gridHeight)/2),gridWidth, gridHeight);
+
   //check when mouse is clicked and held to produce sand
     if (mouseIsPressed === true){
-      let mouseCol = floor((mouseX - centeringVar) / w);
-      let mouseRow = floor((mouseY - centeringVar) / w);
+      let mouseCol = floor((mouseX - centeringWidth / 2) / w);
+      let mouseRow = floor((mouseY - centeringHeight) / w);
       let matrix = 15;
       let splash = floor(matrix/2);
       for (let i = -splash; i <= splash; i++){
@@ -94,11 +104,6 @@ function draw() {
     //reset the huevalue in a cycle
     hueValue += 1; if (hueValue>360) {hueValue = 0};
   }
-  
-
-  stroke(255);
-  fill(0);
-  square(centeringVar,centeringVar,gridHeight);
 
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
@@ -106,7 +111,7 @@ function draw() {
       if (grid[i][j] > 0) {
         fill(grid[i][j], 255, 255);
         let x = i * w; let y = j * w;
-      square(x+centeringVar, y+centeringVar, w); //draws a white square when the state of the array is 1
+      square(x+centeringHeight, y+centeringHeight, w); //draws a white square when the state of the array is 1
     }
     }
   }
